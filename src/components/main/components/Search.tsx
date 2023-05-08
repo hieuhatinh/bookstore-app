@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
 import InputBase from '@mui/material/InputBase'
@@ -7,9 +7,9 @@ import IconButton from '@mui/material/IconButton'
 import SearchIcon from '@mui/icons-material/Search'
 
 export default function Search() {
-    const [search, setSearch] = useState('')
+    const [search, setSearch] = useState<string>('')
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
     }
 

@@ -1,22 +1,31 @@
 import Link from 'next/link'
-import Button from '@mui/material/Button'
-import Avatar from '@mui/material/Avatar'
-import Badge from '@mui/material/Badge'
-import Container from '@mui/material/Container'
-import Divider from '@mui/material/Divider'
-import Box from '@mui/material/Box'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
-import LogoutIcon from '@mui/icons-material/Logout'
-import PersonIcon from '@mui/icons-material/Person'
 import routes from '@/routes'
 import Search from './components/Search'
 import { styled } from '@mui/material/styles'
+import LogoutIcon from '@mui/icons-material/Logout'
+import PersonIcon from '@mui/icons-material/Person'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import {
+    AppBar,
+    Avatar,
+    Badge,
+    Box,
+    Button,
+    Container,
+    Divider,
+    IconButton,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Toolbar,
+    Typography,
+} from '@mui/material'
+import { red } from '@mui/material/colors'
+
+const color = red[500]
 
 const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -68,60 +77,72 @@ function HeaderLayout() {
     const user = true
 
     return (
-        <Container className="flex items-center justify-between">
-            <div className="flex items-center">
-                <Link href={routes.home} className="me-5">
-                    <h2 className="font-semibold text-xl text-rose-600">
-                        BookStore
-                    </h2>
-                </Link>
-
-                <Search />
-            </div>
-
-            {user ? (
-                <div className="flex items-center">
-                    <LightTooltip
-                        title={<ListUser />}
-                        placement="bottom-end"
-                        arrow
-                        enterDelay={200}
-                        leaveDelay={500}
-                    >
-                        <Avatar
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZUzg3Q6JlV46-cTixJAfKsy6Z2slX3TFB8g&usqp=CAU"
-                            alt="avatar"
-                            className="w-6 h-6 cursor-pointer"
-                        />
-                    </LightTooltip>
-                    <Divider className="mx-3" orientation="vertical" flexItem />
-                    <Tooltip title="Giỏ hàng" placement="bottom" arrow>
-                        <Badge
-                            badgeContent={4}
-                            color="primary"
-                            className="cursor-pointer"
+        <AppBar className="bg-slate-200 pb-1">
+            <Toolbar>
+                <Container className="flex items-center justify-between">
+                    <Link href={routes.home} className="me-5">
+                        <Typography
+                            variant="h2"
+                            className="font-semibold text-xl text-rose-600"
                         >
-                            <ShoppingCartIcon className="text-violet-700" />
-                        </Badge>
-                    </Tooltip>
-                </div>
-            ) : (
-                <div className="flex items-center">
-                    <Link href={routes.login}>
-                        <Button variant="text">Đăng nhập</Button>
+                            BookStore
+                        </Typography>
                     </Link>
-                    <Divider
-                        className="mx-1"
-                        orientation="vertical"
-                        variant="middle"
-                        flexItem
-                    />
-                    <Link href={routes.register}>
-                        <Button variant="text">Đăng ký</Button>
-                    </Link>
-                </div>
-            )}
-        </Container>
+
+                    <Search />
+
+                    <Box className="grow" />
+
+                    {user ? (
+                        <Box className="flex items-center">
+                            <LightTooltip
+                                title={<ListUser />}
+                                placement="bottom-end"
+                                arrow
+                                enterDelay={200}
+                                leaveDelay={500}
+                            >
+                                <IconButton>
+                                    <Avatar
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZUzg3Q6JlV46-cTixJAfKsy6Z2slX3TFB8g&usqp=CAU"
+                                        alt="avatar"
+                                        className="w-6 h-6"
+                                    />
+                                </IconButton>
+                            </LightTooltip>
+                            <Divider
+                                className="mx-3"
+                                orientation="vertical"
+                                variant="middle"
+                                flexItem
+                            />
+                            <Tooltip title="Giỏ hàng" placement="bottom" arrow>
+                                <IconButton>
+                                    <Badge badgeContent={4} color="error">
+                                        <ShoppingCartIcon className="text-violet-700" />
+                                    </Badge>
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                    ) : (
+                        <Box className="flex items-center">
+                            <Link href={routes.login}>
+                                <Button variant="text">Đăng nhập</Button>
+                            </Link>
+                            <Divider
+                                className="mx-1"
+                                orientation="vertical"
+                                variant="middle"
+                                flexItem
+                            />
+                            <Link href={routes.register}>
+                                <Button variant="text">Đăng ký</Button>
+                            </Link>
+                        </Box>
+                    )}
+                </Container>
+            </Toolbar>
+        </AppBar>
     )
 }
 

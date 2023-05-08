@@ -1,7 +1,9 @@
 import React, { ReactNode } from 'react'
 import Container from '@mui/material/Container'
+import { Grid } from '@mui/material'
 
 import HeaderLayout from '@/components/main/HeaderLayout'
+import Sidebar from '@/components/main/Sidebar'
 
 interface Props {
     children: ReactNode
@@ -10,11 +12,16 @@ interface Props {
 export default function Layout({ children, ...props }: Props) {
     return (
         <>
-            <div className="bg-slate-200 pb-4 pt-2">
-                <HeaderLayout />
-            </div>
-            <Container maxWidth="lg">
-                <main>{children}</main>
+            <HeaderLayout />
+            <Container maxWidth="lg" className="relative top-header-content">
+                <Grid container>
+                    <Grid item xs={2}>
+                        <Sidebar />
+                    </Grid>
+                    <Grid item xs={10}>
+                        <main>{children}</main>
+                    </Grid>
+                </Grid>
             </Container>
         </>
     )

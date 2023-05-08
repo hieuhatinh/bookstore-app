@@ -3,11 +3,12 @@ import { useFormik } from 'formik'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
+import Link from 'next/link'
+import { Typography } from '@mui/material'
 
 import routes from '@/routes'
 import { schemaForm } from '@/constants'
 import SocialNetwork from './SocialNetwork'
-import Link from 'next/link'
 
 export default function Login() {
     const formik = useFormik({
@@ -26,9 +27,12 @@ export default function Login() {
             width={600}
             className="flex flex-col items-center justify-center mt-5"
         >
-            <h2 className="font-semibold text-xl text-indigo-700 mb-5">
+            <Typography
+                variant="h2"
+                className="font-semibold text-xl text-indigo-700 mb-5"
+            >
                 Login
-            </h2>
+            </Typography>
             <form onSubmit={formik.handleSubmit}>
                 <TextField
                     fullWidth

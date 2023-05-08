@@ -3,11 +3,12 @@ import { useFormik } from 'formik'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
+import Link from 'next/link'
+import { Typography } from '@mui/material'
 
 import { schemaForm } from '@/constants'
 import SocialNetwork from './SocialNetwork'
 import routes from '@/routes'
-import Link from 'next/link'
 
 export default function Login() {
     const formik = useFormik({
@@ -27,10 +28,13 @@ export default function Login() {
             width={600}
             className="flex flex-col items-center justify-center mt-5"
         >
-            <h2 className="font-semibold text-xl text-indigo-700 mb-5">
+            <Typography
+                variant="h2"
+                className="font-semibold text-xl text-indigo-700 mb-5"
+            >
                 Register
-            </h2>
-            <form onSubmit={formik.handleSubmit}>
+            </Typography>
+            <Box component="form" onSubmit={formik.handleSubmit}>
                 <TextField
                     fullWidth
                     id="email"
@@ -88,13 +92,13 @@ export default function Login() {
                 >
                     Đăng ký
                 </Button>
-            </form>
-            <div className="flex items-center justify-center my-2">
-                <span>Bạn đã có tài khoản?</span>
+            </Box>
+            <Box className="flex items-center justify-center my-2">
+                <Typography variant="body1">Bạn đã có tài khoản?</Typography>
                 <Link href={routes.login}>
                     <Button variant="text">Đăng nhập ngay</Button>
                 </Link>
-            </div>
+            </Box>
             <SocialNetwork />
         </Box>
     )
