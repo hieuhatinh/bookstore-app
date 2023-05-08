@@ -14,12 +14,12 @@ export default function Layout({ children, ...props }: Props) {
         <>
             <HeaderLayout />
             <Container maxWidth="lg" className="relative top-header-content">
-                <Grid container>
-                    <Grid item xs={2}>
+                <Grid container spacing={2}>
+                    <Grid item xs={3} className="fixed w-sidebar-width">
                         <Sidebar />
                     </Grid>
-                    <Grid item xs={10}>
-                        <main>{children}</main>
+                    <Grid item xs={9} className="relative left-[300px]">
+                        {children}
                     </Grid>
                 </Grid>
             </Container>

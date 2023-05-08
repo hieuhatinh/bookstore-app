@@ -1,7 +1,7 @@
 import { Paper } from '@mui/material'
 import Head from 'next/head'
 
-import Tabs from '@/components/contents/Tabs'
+import TabsContent from '@/components/contents/TabsContent'
 
 interface ITabItem {
     value: string
@@ -29,6 +29,22 @@ const listTabsItem: ITabItem[] = [
         value: '5',
         label: 'Sách khuyên đọc',
     },
+    {
+        value: '6',
+        label: 'Sách thời đại',
+    },
+    {
+        value: '7',
+        label: 'Sách hay nhất',
+    },
+    {
+        value: '8',
+        label: 'Sách hay nhất',
+    },
+    {
+        value: '9',
+        label: 'Sách hay nhất',
+    },
 ]
 
 export default function Home() {
@@ -37,9 +53,9 @@ export default function Home() {
             <Head>
                 <title>BookStore</title>
             </Head>
-            <main>
-                <Paper>
-                    <Tabs items={listTabsItem} />
+            <main className="min-h-sidebar-height">
+                <Paper className="h-full">
+                    <TabsContent items={listTabsItem} />
                 </Paper>
             </main>
         </>

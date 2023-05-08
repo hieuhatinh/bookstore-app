@@ -49,7 +49,7 @@ const listItemCategory = [
 export default function Sidebar() {
     return (
         <Box>
-            <Paper className="h-[500px] overflow-y-auto">
+            <Paper className="h-sidebar-height overflow-y-auto">
                 <List
                     className="h-full overflow-y-auto"
                     subheader={

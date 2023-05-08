@@ -1,6 +1,9 @@
 import { useState } from 'react'
-import { Box, Tab } from '@mui/material'
+import { Box, Tab, Tabs } from '@mui/material'
 import { TabContext, TabPanel, TabList } from '@mui/lab'
+
+import CardContainer from '@/components/Card/CardContainer'
+import NoData from '@/components/NoData'
 
 interface ITabItem {
     value: string
@@ -11,7 +14,7 @@ interface IProps {
     items: ITabItem[]
 }
 
-export default function Tabs(props: IProps) {
+export default function TabsContent(props: IProps) {
     const { items } = props
 
     const [value, setValue] = useState<string>(items[0].value)
@@ -23,9 +26,13 @@ export default function Tabs(props: IProps) {
     return (
         <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <TabList
+                <Tabs
+                    value={value}
                     onChange={handleChange}
-                    aria-label="lab API tabs example"
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    textColor="primary"
+                    indicatorColor="primary"
                 >
                     {items.map((item) => (
                         <Tab
@@ -34,11 +41,12 @@ export default function Tabs(props: IProps) {
                             value={item.value}
                         />
                     ))}
-                </TabList>
+                </Tabs>
             </Box>
             {items.map((item) => (
                 <TabPanel key={item.value} value={item.value}>
-                    Item One
+                    {/* <CardContainer /> */}
+                    <NoData text="Không có sản phẩm nào" />
                 </TabPanel>
             ))}
         </TabContext>
