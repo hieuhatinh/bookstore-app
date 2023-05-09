@@ -1,7 +1,10 @@
 import { Paper } from '@mui/material'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
+import type { NextPageWithLayout } from './_app'
 
 import TabsContent from '@/components/contents/TabsContent'
+import DefaultLayout from '@/components/layout/DefaultLayout'
 
 interface ITabItem {
     value: string
@@ -29,25 +32,9 @@ const listTabsItem: ITabItem[] = [
         value: '5',
         label: 'Sách khuyên đọc',
     },
-    {
-        value: '6',
-        label: 'Sách thời đại',
-    },
-    {
-        value: '7',
-        label: 'Sách hay nhất',
-    },
-    {
-        value: '8',
-        label: 'Sách hay nhất',
-    },
-    {
-        value: '9',
-        label: 'Sách hay nhất',
-    },
 ]
 
-export default function Home() {
+const Home: NextPageWithLayout = () => {
     return (
         <>
             <Head>
@@ -61,3 +48,9 @@ export default function Home() {
         </>
     )
 }
+
+Home.getLayout = function getLayout(page: ReactElement) {
+    return <DefaultLayout>{page}</DefaultLayout>
+}
+
+export default Home

@@ -79,7 +79,10 @@ function HeaderLayout() {
     return (
         <AppBar className="bg-slate-200 pb-1">
             <Toolbar>
-                <Container className="flex items-center justify-between">
+                <Container
+                    maxWidth="lg"
+                    className="flex items-center justify-between"
+                >
                     <Link href={routes.home} className="me-5">
                         <Typography
                             variant="h2"
@@ -116,13 +119,19 @@ function HeaderLayout() {
                                 variant="middle"
                                 flexItem
                             />
-                            <Tooltip title="Giỏ hàng" placement="bottom" arrow>
-                                <IconButton>
-                                    <Badge badgeContent={4} color="error">
-                                        <ShoppingCartIcon className="text-violet-700" />
-                                    </Badge>
-                                </IconButton>
-                            </Tooltip>
+                            <Link href="/cart">
+                                <Tooltip
+                                    title="Giỏ hàng"
+                                    placement="bottom"
+                                    arrow
+                                >
+                                    <IconButton>
+                                        <Badge badgeContent={4} color="error">
+                                            <ShoppingCartIcon className="text-violet-700" />
+                                        </Badge>
+                                    </IconButton>
+                                </Tooltip>
+                            </Link>
                         </Box>
                     ) : (
                         <Box className="flex items-center">
