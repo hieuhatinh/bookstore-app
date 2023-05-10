@@ -40,7 +40,7 @@ const Home: NextPageWithLayout = () => {
             <Head>
                 <title>BookStore</title>
             </Head>
-            <main className="min-h-sidebar-height">
+            <main>
                 <Paper className="h-full">
                     <TabsContent items={listTabsItem} />
                 </Paper>

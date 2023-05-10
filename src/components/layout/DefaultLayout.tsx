@@ -12,9 +12,9 @@ interface Props {
 
 export default function DefaultLayout({ children, ...props }: Props) {
     return (
-        <div className="h-screen">
+        <>
             <HeaderLayout />
-            <Container maxWidth="lg" className="mt-header-content">
+            <Container maxWidth="lg" className="mt-header-content h-full">
                 <Grid container spacing={2}>
                     <Grid item xs={3} className="w-sidebar-width">
                         <Sidebar />
@@ -25,6 +25,6 @@ export default function DefaultLayout({ children, ...props }: Props) {
                 </Grid>
             </Container>
             <Footer />
-        </div>
+        </>
     )
 }

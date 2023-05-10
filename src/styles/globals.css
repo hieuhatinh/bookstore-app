@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background-color: #f5f5fa;
+}
+
+@layer components {
+    .button-custom-quantity {
+        border: 1px solid;
+        @apply p-0 min-w-[24px] h-[26px] rounded-none border-gray-300;
+    }
+
+    .input-custom-quantity {
+        border: 1px solid;
+        @apply outline-0 items-center w-8 border-x-0 border-gray-300;
+    }
+
+    .three-dots {
+        display: block;
+        display: -webkit-box;
+        height: calc(1.5 * 2 * 16px);
+        font-size: 16px;
+        line-height: 1.5;
+        -webkit-line-clamp: 2; /* số dòng hiển thị */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 10px;
+    }
+}

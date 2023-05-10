@@ -12,7 +12,7 @@ export default function HeaderOnly({ children, ...props }: Props) {
     return (
         <>
             <HeaderLayout />
-            <Container maxWidth="lg" className="relative top-header-content">
+            <Container maxWidth="lg" className="mt-header-content h-full">
                 {children}
             </Container>
             <Footer />

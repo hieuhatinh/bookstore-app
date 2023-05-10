@@ -20,11 +20,11 @@ export default function CardItem() {
                     </Typography>
                     <Badge
                         badgeContent="đ"
-                        className="text-red-500 font-bold left-[3px]"
+                        className="text-price font-bold left-[3px]"
                     >
                         <Typography
                             variant="body2"
-                            className="text-red-500 font-bold"
+                            className="text-price font-bold"
                         >
                             119.453
                         </Typography>
