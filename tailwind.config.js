@@ -16,6 +16,8 @@ module.exports = {
                 'sidebar-height': '500px',
                 'content-height': '500px',
                 'list-product-height': '500px',
+                'width-search': '500px',
+                'search-history': '300px',
                 'sidebar-width': '292px',
             },
         },

@@ -6,6 +6,18 @@ import type { NextPageWithLayout } from './_app'
 import TabsContent from '@/components/contents/TabsContent'
 import DefaultLayout from '@/components/layout/DefaultLayout'
 
+// 1. xây dựng tooltip cho ô search header
+// 2. Xây dựng layout phần auth login/register
+// 3. xây dựng trang chi tiết sản phẩm
+// 4. sửa lỗi sidebar
+// 4. xây dựng logic thêm sản phẩm vào giỏ hàng và các logic tương tự ở phần giỏ hàng bằng redux
+// 5. kết nối firebase làm logic login (bằng email và google)
+// 6. kết nối firebase lấy thông tin về và render ra giao diện
+// 7. làm button loading khi submit 1 cái gì đó (đăng nhập, mua hàng)
+// 8. làm giao diện trang loading khi chờ load dữ liệu
+// 9. làm trang 404 not found khi sai đường dẫn
+// 10. làm các thông báo lỗi, warning đối với những đường dẫn chưa hoàn thiện
+
 interface ITabItem {
     value: string
     label: string
