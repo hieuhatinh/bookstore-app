@@ -6,7 +6,7 @@ import type { NextPageWithLayout } from './_app'
 import TabsContent from '@/components/contents/TabsContent'
 import DefaultLayout from '@/components/layout/DefaultLayout'
 
-// 1. xây dựng tooltip cho ô search header
+// 1. sửa lại tooltip thanh tìm kiếm và menu img user
 // 2. Xây dựng layout phần auth login/register
 // 3. xây dựng trang chi tiết sản phẩm
 // 4. sửa lỗi sidebar

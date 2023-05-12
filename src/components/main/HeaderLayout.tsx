@@ -1,8 +1,9 @@
+import { useState } from 'react'
 import Link from 'next/link'
-import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
+import Tooltip from '@mui/material/Tooltip'
 import routes from '@/routes'
 import Search from './components/Search'
-import { styled } from '@mui/material/styles'
+import Settings from '@mui/icons-material/Settings'
 import LogoutIcon from '@mui/icons-material/Logout'
 import PersonIcon from '@mui/icons-material/Person'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
@@ -15,66 +16,71 @@ import {
     Container,
     Divider,
     IconButton,
-    List,
-    ListItem,
-    ListItemButton,
     ListItemIcon,
     ListItemText,
     Toolbar,
     Typography,
+    Menu,
+    MenuItem,
 } from '@mui/material'
-import { red } from '@mui/material/colors'
 
-const color = red[500]
+interface IPropsListUser {
+    anchorEl: null | HTMLElement
+    open: boolean
+    handleClose: () => void
+}
 
-const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-    [`& .${tooltipClasses.arrow}`]: {
-        color: '#fff',
-    },
-    [`& .${tooltipClasses.tooltip}`]: {
-        backgroundColor: '#fff',
-        color: 'rgba(0, 0, 0, 0.87)',
-        boxShadow: theme.shadows[1],
-        fontSize: 11,
-    },
-}))
+const ListUser = (props: IPropsListUser) => {
+    const { anchorEl, open, handleClose } = props
 
-const ListUser = () => {
     return (
-        <Box sx={{ width: '100%', maxWidth: 360 }}>
+        <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            onClick={handleClose}
+            sx={{ width: '100%', maxWidth: 360 }}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
             <nav aria-label="main mailbox folders">
-                <List>
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <PersonIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Hồ sơ" />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
+                <MenuItem>
+                    <ListItemIcon>
+                        <PersonIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Hồ sơ" />
+                </MenuItem>
             </nav>
             <Divider />
             <nav aria-label="secondary mailbox folders">
-                <List>
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <LogoutIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Đăng xuất" />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
+                <MenuItem>
+                    <ListItemIcon>
+                        <Settings fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Cài đặt" />
+                </MenuItem>
+                <MenuItem>
+                    <ListItemIcon>
+                        <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Đăng xuất" />
+                </MenuItem>
             </nav>
-        </Box>
+        </Menu>
     )
 }
 
 function HeaderLayout() {
     const user = true
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+    const open = Boolean(anchorEl)
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget)
+    }
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
 
     return (
         <AppBar className="bg-slate-200 pb-1">
@@ -98,21 +104,18 @@ function HeaderLayout() {
 
                     {user ? (
                         <Box className="flex items-center">
-                            <LightTooltip
-                                title={<ListUser />}
-                                placement="bottom-end"
-                                arrow
-                                enterDelay={200}
-                                leaveDelay={500}
-                            >
-                                <IconButton>
-                                    <Avatar
-                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZUzg3Q6JlV46-cTixJAfKsy6Z2slX3TFB8g&usqp=CAU"
-                                        alt="avatar"
-                                        className="w-6 h-6"
-                                    />
-                                </IconButton>
-                            </LightTooltip>
+                            <IconButton onClick={handleClick}>
+                                <Avatar
+                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZUzg3Q6JlV46-cTixJAfKsy6Z2slX3TFB8g&usqp=CAU"
+                                    alt="avatar"
+                                    className="w-6 h-6"
+                                />
+                            </IconButton>
+                            <ListUser
+                                anchorEl={anchorEl}
+                                open={open}
+                                handleClose={handleClose}
+                            />
                             <Divider
                                 className="mx-3"
                                 orientation="vertical"

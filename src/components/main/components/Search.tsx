@@ -39,7 +39,7 @@ const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
         maxWidth: '100%',
         backgroundColor: '#fff',
         padding: 0,
-        right: 0,
+        marginTop: '4px !important',
     },
 })
 
@@ -101,50 +101,51 @@ export default function Search() {
             className="w-width-search"
             onSubmit={handleSubmit}
         >
-            <CustomTooltip
-                PopperProps={{
-                    disablePortal: true,
-                }}
-                // onClose={handleTooltipClose}
-                open={open}
-                disableFocusListener={true}
-                disableHoverListener
-                disableTouchListener={true}
-                placement="bottom-start"
-                title={
-                    <SearchHistory
-                        history={searchHistory}
-                        handleRemoveItem={handleRemoveItem}
-                    />
-                }
-                onClick={(e) => e.stopPropagation()}
-            >
-                <Box className="flex items-center py-[2px] px-1 w-full">
-                    <IconButton sx={{ p: '10px' }} aria-label="menu">
-                        <SearchIcon />
-                    </IconButton>
-                    <ClickAwayListener onClickAway={handleTooltipClose}>
-                        <div className="flex-1">
-                            <InputBase
-                                placeholder="Bạn tìm gì hôm nay?"
-                                inputProps={{
-                                    'aria-label': 'Bạn tìm gì hôm nay?',
-                                }}
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                onFocus={handleTooltipOpen}
-                                className="w-full"
+            <ClickAwayListener onClickAway={handleTooltipClose}>
+                <div>
+                    <CustomTooltip
+                        PopperProps={{
+                            disablePortal: true,
+                        }}
+                        // onClose={handleTooltipClose}
+                        open={open}
+                        // disableFocusListener
+                        disableHoverListener
+                        disableTouchListener
+                        placement="bottom-start"
+                        title={
+                            <SearchHistory
+                                history={searchHistory}
+                                handleRemoveItem={handleRemoveItem}
                             />
-                        </div>
-                    </ClickAwayListener>
+                        }
+                    >
+                        <Box className="flex items-center py-[2px] px-1 w-full">
+                            <IconButton sx={{ p: '10px' }} aria-label="menu">
+                                <SearchIcon />
+                            </IconButton>
+                            <div className="flex-1">
+                                <InputBase
+                                    placeholder="Bạn tìm gì hôm nay?"
+                                    inputProps={{
+                                        'aria-label': 'Bạn tìm gì hôm nay?',
+                                    }}
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    onFocus={handleTooltipOpen}
+                                    className="w-full"
+                                />
+                            </div>
 
-                    <Divider
-                        sx={{ height: 28, m: 0.5 }}
-                        orientation="vertical"
-                    />
-                    <Button variant="text">Tìm kiếm</Button>
-                </Box>
-            </CustomTooltip>
+                            <Divider
+                                sx={{ height: 28, m: 0.5 }}
+                                orientation="vertical"
+                            />
+                            <Button variant="text">Tìm kiếm</Button>
+                        </Box>
+                    </CustomTooltip>
+                </div>
+            </ClickAwayListener>
         </Paper>
     )
 }

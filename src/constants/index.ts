@@ -6,7 +6,7 @@ export const schemaForm = yup.object({
     passwordConfirm: yup.string().min(6, 'Cần nhập tối thiểu 6 ký tự').required('Bạn cần nhập password').oneOf([yup.ref('password')], 'Password không khớp')
 })
 
-// footer
+// @/components/main/Footer.tsx
 export const customerSupport = [
     {
         to: '/', 
@@ -23,5 +23,49 @@ export const customerSupport = [
     {
         to: '/', 
         title: 'Phương thức vận chuyển'
+    },
+]
+
+// @/components/main/components/Search.tsx
+export const listItemCategory = [
+    {
+        id: 0,
+        category: 'Tất cả',
+    },
+    {
+        id: 1,
+        category: 'Văn học trong nước',
+    },
+    {
+        id: 2,
+        category: 'Văn học nước ngoài',
+    },
+    {
+        id: 3,
+        category: 'Kinh tế',
+    },
+    {
+        id: 4,
+        category: 'Tâm lý giáo dục',
+    },
+    {
+        id: 5,
+        category: 'Triết học',
+    },
+    {
+        id: 6,
+        category: 'Tôn giáo',
+    },
+    {
+        id: 7,
+        category: 'Truyện',
+    },
+    {
+        id: 8,
+        category: 'Lịch sử - Địa lý',
+    },
+    {
+        id: 9,
+        category: 'Khoa học',
     },
 ]

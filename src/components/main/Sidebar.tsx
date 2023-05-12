@@ -1,52 +1,22 @@
+import { useState } from 'react'
 import {
     Box,
     List,
-    ListItemButton,
     ListItemText,
     ListSubheader,
     Paper,
+    Tab,
+    Tabs,
 } from '@mui/material'
-
-const listItemCategory = [
-    {
-        id: 1,
-        category: 'Văn học trong nước',
-    },
-    {
-        id: 2,
-        category: 'Văn học nước ngoài',
-    },
-    {
-        id: 3,
-        category: 'Kinh tế',
-    },
-    {
-        id: 4,
-        category: 'Tâm lý giáo dục',
-    },
-    {
-        id: 5,
-        category: 'Triết học',
-    },
-    {
-        id: 6,
-        category: 'Tôn giáo',
-    },
-    {
-        id: 7,
-        category: 'Truyện',
-    },
-    {
-        id: 8,
-        category: 'Lịch sử - Địa lý',
-    },
-    {
-        id: 9,
-        category: 'Khoa học',
-    },
-]
+import { listItemCategory } from '@/constants'
 
 export default function Sidebar() {
+    const [value, setValue] = useState<string>(listItemCategory[0].category)
+
+    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+        setValue(newValue)
+    }
+
     return (
         <Box>
             <Paper className="h-sidebar-height overflow-y-auto">
@@ -58,11 +28,26 @@ export default function Sidebar() {
                         </ListSubheader>
                     }
                 >
-                    {listItemCategory.map((item) => (
-                        <ListItemButton key={item.id}>
-                            <ListItemText primary={item.category} />
-                        </ListItemButton>
-                    ))}
+                    <Tabs
+                        value={value}
+                        orientation="vertical"
+                        onChange={handleChange}
+                        className="flex items-start"
+                    >
+                        {listItemCategory.map((item) => (
+                            <Tab
+                                key={item.id}
+                                label={
+                                    <ListItemText
+                                        className="flex items-center normal-case"
+                                        primary={item.category}
+                                    />
+                                }
+                                value={item.category}
+                                className="flex items-start py-1 ps-8 w-full"
+                            />
+                        ))}
+                    </Tabs>
                 </List>
             </Paper>
         </Box>
