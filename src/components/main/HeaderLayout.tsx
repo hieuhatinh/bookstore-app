@@ -71,7 +71,7 @@ const ListUser = (props: IPropsListUser) => {
 }
 
 function HeaderLayout() {
-    const user = true
+    const user = false
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl)
@@ -92,7 +92,7 @@ function HeaderLayout() {
                     <Link href={routes.home} className="me-5">
                         <Typography
                             variant="h2"
-                            className="font-semibold text-xl text-rose-600"
+                            className="font-semibold text-xl text-logo"
                         >
                             BookStore
                         </Typography>

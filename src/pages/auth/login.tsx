@@ -1,11 +1,14 @@
 import Login from '@/components/Auth/Login'
 import Head from 'next/head'
+import { ReactElement } from 'react'
+import { NextPageWithLayout } from '../_app'
+import AuthLayout from '@/components/layout/AuthLayout'
 
-export default function LoginPage() {
+const LoginPage: NextPageWithLayout = () => {
     return (
         <>
             <Head>
-                <title>BookStore | Login</title>
+                <title>Login | BookStore</title>
             </Head>
             <div className="flex items-center justify-center mt-5">
                 <Login />
@@ -13,3 +16,9 @@ export default function LoginPage() {
         </>
     )
 }
+
+LoginPage.getLayout = function getLayout(page: ReactElement) {
+    return <AuthLayout title="Login">{page}</AuthLayout>
+}
+
+export default LoginPage

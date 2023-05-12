@@ -6,10 +6,7 @@ import type { NextPageWithLayout } from './_app'
 import TabsContent from '@/components/contents/TabsContent'
 import DefaultLayout from '@/components/layout/DefaultLayout'
 
-// 1. sửa lại tooltip thanh tìm kiếm và menu img user
-// 2. Xây dựng layout phần auth login/register
 // 3. xây dựng trang chi tiết sản phẩm
-// 4. sửa lỗi sidebar
 // 4. xây dựng logic thêm sản phẩm vào giỏ hàng và các logic tương tự ở phần giỏ hàng bằng redux
 // 5. kết nối firebase làm logic login (bằng email và google)
 // 6. kết nối firebase lấy thông tin về và render ra giao diện
