@@ -1,19 +1,16 @@
 import {
     Badge,
     Box,
-    Button,
     Checkbox,
     FormControlLabel,
     FormGroup,
     Grid,
     IconButton,
-    Typography,
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
-import AddIcon from '@mui/icons-material/Add'
-import RemoveIcon from '@mui/icons-material/Remove'
 
 import Product from './Product'
+import NumberOfProducts from '@/components/NumberOfProducts'
 
 interface IProps {}
 
@@ -34,17 +31,7 @@ export default function ProductItem(props: IProps) {
                 </Grid>
                 <Grid item xs={2} className="text-center">
                     <Box className="flex items-center justify-center">
-                        <Button className="button-custom-quantity">
-                            <AddIcon />
-                        </Button>
-                        <input
-                            type="text"
-                            value="1"
-                            className="input-custom-quantity text-center"
-                        />
-                        <Button className="button-custom-quantity">
-                            <RemoveIcon />
-                        </Button>
+                        <NumberOfProducts />
                     </Box>
                 </Grid>
                 <Grid item xs={2} className="text-center">

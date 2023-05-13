@@ -10,6 +10,7 @@ module.exports = {
             colors: {
                 price: '#ef4444',
                 'submit-buy': '#e74242',
+                'submit-buy-hv': '#f87171',
                 logo: '#f43f5e',
             },
             spacing: {
