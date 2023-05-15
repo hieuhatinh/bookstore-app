@@ -1,7 +1,8 @@
-import Register from '@/components/Auth/Register'
 import Head from 'next/head'
 import { ReactElement } from 'react'
+
 import { NextPageWithLayout } from '../_app'
+import Register from '@/components/Auth/Register'
 import AuthLayout from '@/components/layout/AuthLayout'
 
 const RegisterPage: NextPageWithLayout = () => {

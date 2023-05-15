@@ -1,27 +1,51 @@
-import React from 'react'
-import { useFormik } from 'formik'
+import React, { useState } from 'react'
+import { Formik } from 'formik'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Link from 'next/link'
 import { Typography } from '@mui/material'
+import SaveIcon from '@mui/icons-material/Save'
+import { LoadingButton } from '@mui/lab'
+import { useRouter } from 'next/navigation'
+
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 
 import { schemaForm } from '@/constants'
 import SocialNetwork from './SocialNetwork'
 import routes from '@/routes'
+import { auth } from '@/config/firebase'
+import AlertError from '@/components/ErrorMessage/AlertError'
 
-export default function Login() {
-    const formik = useFormik({
-        initialValues: {
-            email: '',
-            password: '',
-            passwordConfirm: '',
-        },
-        validationSchema: schemaForm,
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2))
-        },
+interface IValuesFormRegister {
+    email: string
+    password: string
+    passwordConfirm: string
+}
+
+interface IErrorMessage {
+    title: string
+    message: string
+}
+
+export default function Register() {
+    const router = useRouter()
+    const [open, setOpen] = useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = useState<IErrorMessage>({
+        title: '',
+        message: '',
     })
+
+    const handleClose = (
+        event?: React.SyntheticEvent | Event,
+        reason?: string
+    ) => {
+        if (reason === 'clickaway') {
+            return
+        }
+
+        setOpen(false)
+    }
 
     return (
         <Box
@@ -34,65 +58,111 @@ export default function Login() {
             >
                 Register
             </Typography>
-            <Box component="form" onSubmit={formik.handleSubmit}>
-                <TextField
-                    fullWidth
-                    id="email"
-                    name="email"
-                    label="Email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
-                    className="mb-2"
-                />
-                <TextField
-                    fullWidth
-                    id="password"
-                    name="password"
-                    label="Password"
-                    type="password"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={
-                        formik.touched.password &&
-                        Boolean(formik.errors.password)
-                    }
-                    helperText={
-                        formik.touched.password && formik.errors.password
-                    }
-                    className="mb-2"
-                />
-                <TextField
-                    fullWidth
-                    id="passwordConfirm"
-                    name="passwordConfirm"
-                    label="Password Confirm"
-                    type="password"
-                    value={formik.values.passwordConfirm}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={
-                        formik.touched.passwordConfirm &&
-                        Boolean(formik.errors.passwordConfirm)
-                    }
-                    helperText={
-                        formik.touched.passwordConfirm &&
-                        formik.errors.passwordConfirm
-                    }
-                    className="mb-2"
-                />
-                <Button
-                    variant="contained"
-                    fullWidth
-                    type="submit"
-                    className="bg-blue-600"
-                >
-                    Đăng ký
-                </Button>
-            </Box>
+            <Formik
+                initialValues={{
+                    email: '',
+                    password: '',
+                    passwordConfirm: '',
+                }}
+                validationSchema={schemaForm}
+                onSubmit={async (values: IValuesFormRegister) => {
+                    await createUserWithEmailAndPassword(
+                        auth,
+                        values.email,
+                        values.password
+                    )
+                        .then((userCredential) => {
+                            router.push(routes.login)
+                        })
+                        .catch((error) => {
+                            setOpen(true)
+                            setErrorMessage({
+                                title: error.code,
+                                message: error.message,
+                            })
+                        })
+                }}
+            >
+                {(props) => (
+                    <Box component="form" onSubmit={props.handleSubmit}>
+                        <TextField
+                            fullWidth
+                            id="email"
+                            name="email"
+                            label="Email"
+                            value={props.values.email}
+                            onChange={props.handleChange}
+                            onBlur={props.handleBlur}
+                            error={
+                                props.touched.email &&
+                                Boolean(props.errors.email)
+                            }
+                            helperText={
+                                props.touched.email && props.errors.email
+                            }
+                            className="mb-2"
+                        />
+                        <TextField
+                            fullWidth
+                            id="password"
+                            name="password"
+                            label="Password"
+                            type="password"
+                            value={props.values.password}
+                            onChange={props.handleChange}
+                            onBlur={props.handleBlur}
+                            error={
+                                props.touched.password &&
+                                Boolean(props.errors.password)
+                            }
+                            helperText={
+                                props.touched.password && props.errors.password
+                            }
+                            className="mb-2"
+                        />
+                        <TextField
+                            fullWidth
+                            id="passwordConfirm"
+                            name="passwordConfirm"
+                            label="Password Confirm"
+                            type="password"
+                            value={props.values.passwordConfirm}
+                            onChange={props.handleChange}
+                            onBlur={props.handleBlur}
+                            error={
+                                props.touched.passwordConfirm &&
+                                Boolean(props.errors.passwordConfirm)
+                            }
+                            helperText={
+                                props.touched.passwordConfirm &&
+                                props.errors.passwordConfirm
+                            }
+                            className="mb-2"
+                        />
+                        {props.isSubmitting ? (
+                            <LoadingButton
+                                loading
+                                loadingPosition="start"
+                                startIcon={<SaveIcon />}
+                                variant="contained"
+                                fullWidth
+                                type="button"
+                            >
+                                Đăng ký
+                            </LoadingButton>
+                        ) : (
+                            <Button
+                                variant="contained"
+                                fullWidth
+                                type="submit"
+                                className="bg-blue-600"
+                            >
+                                Đăng ký
+                            </Button>
+                        )}
+                    </Box>
+                )}
+            </Formik>
             <Box className="flex items-center justify-center my-2">
                 <Typography variant="body1">Bạn đã có tài khoản?</Typography>
                 <Link href={routes.login}>
@@ -100,6 +170,13 @@ export default function Login() {
                 </Link>
             </Box>
             <SocialNetwork />
+
+            {/* Hiển thị alert khi đăng ký thất bại */}
+            <AlertError
+                open={open}
+                handleClose={handleClose}
+                errorMessage={errorMessage}
+            />
         </Box>
     )
 }
