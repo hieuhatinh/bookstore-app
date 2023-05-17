@@ -9,7 +9,7 @@ import SaveIcon from '@mui/icons-material/Save'
 import { LoadingButton } from '@mui/lab'
 import { useRouter } from 'next/navigation'
 
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 
 import { schemaForm } from '@/constants'
 import SocialNetwork from './SocialNetwork'
@@ -18,6 +18,7 @@ import { auth } from '@/config/firebase'
 import AlertError from '@/components/ErrorMessage/AlertError'
 
 interface IValuesFormRegister {
+    fullName: string
     email: string
     password: string
     passwordConfirm: string
@@ -60,6 +61,7 @@ export default function Register() {
             </Typography>
             <Formik
                 initialValues={{
+                    fullName: '',
                     email: '',
                     password: '',
                     passwordConfirm: '',
@@ -72,6 +74,9 @@ export default function Register() {
                         values.password
                     )
                         .then((userCredential) => {
+                            updateProfile(userCredential.user, {
+                                displayName: values.fullName,
+                            })
                             router.push(routes.login)
                         })
                         .catch((error) => {
@@ -85,6 +90,23 @@ export default function Register() {
             >
                 {(props) => (
                     <Box component="form" onSubmit={props.handleSubmit}>
+                        <TextField
+                            fullWidth
+                            id="fullName"
+                            name="fullName"
+                            label="FullName"
+                            value={props.values.fullName}
+                            onChange={props.handleChange}
+                            onBlur={props.handleBlur}
+                            error={
+                                props.touched.fullName &&
+                                Boolean(props.errors.fullName)
+                            }
+                            helperText={
+                                props.touched.fullName && props.errors.fullName
+                            }
+                            className="mb-2"
+                        />
                         <TextField
                             fullWidth
                             id="email"

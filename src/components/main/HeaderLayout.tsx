@@ -1,8 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Tooltip from '@mui/material/Tooltip'
-import routes from '@/routes'
-import Search from './components/Search'
 import Settings from '@mui/icons-material/Settings'
 import LogoutIcon from '@mui/icons-material/Logout'
 import PersonIcon from '@mui/icons-material/Person'
@@ -24,10 +22,21 @@ import {
     MenuItem,
 } from '@mui/material'
 
+import { onAuthStateChanged } from 'firebase/auth'
+
+import routes from '@/routes'
+import Search from './components/Search'
+import { auth } from '@/config/firebase'
+
 interface IPropsListUser {
     anchorEl: null | HTMLElement
     open: boolean
     handleClose: () => void
+}
+
+interface User {
+    name?: string | null
+    email?: string | null
 }
 
 const ListUser = (props: IPropsListUser) => {
@@ -71,16 +80,32 @@ const ListUser = (props: IPropsListUser) => {
 }
 
 function HeaderLayout() {
-    const user = false
-
+    const userRef = useRef<User | null>(null) // get user
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl)
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget)
     }
+
     const handleClose = () => {
         setAnchorEl(null)
     }
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                userRef.current = {
+                    name: user.displayName,
+                    email: user.email,
+                }
+            } else {
+                userRef.current = null
+            }
+        })
+
+        return () => unsubscribe()
+    }, [])
 
     return (
         <AppBar className="bg-slate-200 pb-1">
@@ -102,15 +127,24 @@ function HeaderLayout() {
 
                     <Box className="grow" />
 
-                    {user ? (
+                    {userRef.current ? (
                         <Box className="flex items-center">
-                            <IconButton onClick={handleClick}>
-                                <Avatar
-                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZUzg3Q6JlV46-cTixJAfKsy6Z2slX3TFB8g&usqp=CAU"
-                                    alt="avatar"
-                                    className="w-6 h-6"
-                                />
-                            </IconButton>
+                            <Tooltip
+                                title={
+                                    userRef.current.name ||
+                                    userRef.current.email
+                                }
+                                placement="bottom"
+                                arrow
+                            >
+                                <IconButton onClick={handleClick}>
+                                    <Avatar
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZUzg3Q6JlV46-cTixJAfKsy6Z2slX3TFB8g&usqp=CAU"
+                                        alt="avatar"
+                                        className="w-6 h-6"
+                                    />
+                                </IconButton>
+                            </Tooltip>
                             <ListUser
                                 anchorEl={anchorEl}
                                 open={open}

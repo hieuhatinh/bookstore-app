@@ -10,7 +10,7 @@ import SaveIcon from '@mui/icons-material/Save'
 
 import { signInWithEmailAndPassword } from 'firebase/auth'
 
-import { schemaForm } from '@/constants'
+import { schemaFormLogin } from '@/constants'
 import SocialNetwork from './SocialNetwork'
 import AlertError from '@/components/ErrorMessage/AlertError'
 import routes from '@/routes'
@@ -50,9 +50,8 @@ export default function Login() {
             email: '',
             password: '',
         },
-        validationSchema: schemaForm,
+        validationSchema: schemaFormLogin,
         onSubmit: async (values: IValuesLogin) => {
-            alert(JSON.stringify(values, null, 2))
             await signInWithEmailAndPassword(
                 auth,
                 values.email,
