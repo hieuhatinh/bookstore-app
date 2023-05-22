@@ -10,6 +10,28 @@ import {
 } from '@mui/material'
 import { listItemCategory } from '@/constants'
 
+interface LinkTabProps {
+    key: number
+    href: string
+    label: React.ReactNode
+    value: string
+    className: string
+}
+
+function LinkTab(props: LinkTabProps) {
+    return (
+        <Tab
+            component="a"
+            onClick={(
+                event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+            ) => {
+                event.preventDefault()
+            }}
+            {...props}
+        />
+    )
+}
+
 export default function Sidebar() {
     const [value, setValue] = useState<string>(listItemCategory[0].category)
 
@@ -35,8 +57,9 @@ export default function Sidebar() {
                         className="flex items-start"
                     >
                         {listItemCategory.map((item) => (
-                            <Tab
+                            <LinkTab
                                 key={item.id}
+                                href={`/products/${item.type}`}
                                 label={
                                     <ListItemText
                                         className="flex items-center normal-case"

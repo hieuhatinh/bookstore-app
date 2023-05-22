@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Box, Tab, Tabs } from '@mui/material'
 import { TabContext, TabPanel, TabList } from '@mui/lab'
 
 import CardContainer from '@/components/Card/CardContainer'
 import NoData from '@/components/NoData'
+import { collection, getDocs, getDocsFromServer } from 'firebase/firestore'
+import { db } from '@/config/firebase'
 
 interface ITabItem {
     value: string
@@ -22,6 +24,17 @@ export default function TabsContent(props: IProps) {
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue)
     }
+
+    // useEffect(() => {
+    //     const data = async () => {
+    //         const data1 = await getDocs(collection(db, 'all'))
+    //         data1.forEach((doc) => {
+    //             console.log(doc.id, doc.data())
+    //         })
+    //     }
+
+    //     data()
+    // }, [])
 
     return (
         <TabContext value={value}>

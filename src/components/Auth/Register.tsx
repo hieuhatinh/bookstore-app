@@ -15,18 +15,13 @@ import { schemaForm } from '@/constants'
 import SocialNetwork from './SocialNetwork'
 import routes from '@/routes'
 import { auth } from '@/config/firebase'
-import AlertError from '@/components/ErrorMessage/AlertError'
+import AlertError, { IErrorMessage } from '@/components/ErrorMessage/AlertError'
 
 interface IValuesFormRegister {
     fullName: string
     email: string
     password: string
     passwordConfirm: string
-}
-
-interface IErrorMessage {
-    title: string
-    message: string
 }
 
 export default function Register() {

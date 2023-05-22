@@ -1,29 +1,24 @@
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { Box, Typography } from '@mui/material'
 import Link from 'next/link'
 import { LoadingButton } from '@mui/lab'
 import SaveIcon from '@mui/icons-material/Save'
-
-import { signInWithEmailAndPassword } from 'firebase/auth'
-
-import { schemaFormLogin } from '@/constants'
-import SocialNetwork from './SocialNetwork'
-import AlertError from '@/components/ErrorMessage/AlertError'
-import routes from '@/routes'
 import { auth } from '@/config/firebase'
+
+import { UserCredential, signInWithEmailAndPassword } from 'firebase/auth'
+
+import { schemaFormLogin, userProfileLocalStorage } from '@/constants'
+import SocialNetwork from './SocialNetwork'
+import AlertError, { IErrorMessage } from '@/components/ErrorMessage/AlertError'
+import routes from '@/routes'
 
 interface IValuesLogin {
     email: string
     password: string
-}
-
-interface IErrorMessage {
-    title: string
-    message: string
 }
 
 export default function Login() {
@@ -57,7 +52,18 @@ export default function Login() {
                 values.email,
                 values.password
             )
-                .then((userCredential) => {
+                .then((userCredential: UserCredential) => {
+                    const result = {
+                        name: userCredential.user.displayName,
+                        email: userCredential.user.email,
+                        uid: userCredential.user.uid,
+                    }
+
+                    localStorage.setItem(
+                        userProfileLocalStorage,
+                        JSON.stringify(result)
+                    )
+
                     router.push(routes.home)
                 })
                 .catch((error) => {
@@ -69,6 +75,14 @@ export default function Login() {
                 })
         },
     })
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            localStorage.removeItem(userProfileLocalStorage)
+        }, 1000 * 60 * 60 * 24)
+
+        return () => clearTimeout(timeoutId)
+    }, [])
 
     return (
         <Box

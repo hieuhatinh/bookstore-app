@@ -21,12 +21,15 @@ import {
     Menu,
     MenuItem,
 } from '@mui/material'
+import { auth } from '@/config/firebase'
+import { useRouter } from 'next/navigation'
 
-import { onAuthStateChanged } from 'firebase/auth'
+import { signOut } from 'firebase/auth'
 
 import routes from '@/routes'
 import Search from './components/Search'
-import { auth } from '@/config/firebase'
+import AlertError, { IErrorMessage } from '@/components/ErrorMessage/AlertError'
+import { userProfileLocalStorage } from '@/constants'
 
 interface IPropsListUser {
     anchorEl: null | HTMLElement
@@ -34,53 +37,89 @@ interface IPropsListUser {
     handleClose: () => void
 }
 
-interface User {
-    name?: string | null
-    email?: string | null
+interface IUserCurrent {
+    name?: string
+    email?: string
+    uid: string
 }
 
 const ListUser = (props: IPropsListUser) => {
     const { anchorEl, open, handleClose } = props
+    const router = useRouter()
+    const [openErrorMessage, setOpenErrorMessage] = useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = useState<IErrorMessage>({
+        title: '',
+        message: '',
+    })
+
+    const handleCloseErrorMessage = (
+        event?: React.SyntheticEvent | Event,
+        reason?: string
+    ) => {
+        if (reason === 'clickaway') {
+            return
+        }
+
+        setOpenErrorMessage(false)
+    }
+
+    const handleSignOut = () => {
+        signOut(auth)
+            .then(() => {
+                localStorage.removeItem(userProfileLocalStorage)
+                router.push(routes.home)
+            })
+            .catch((err) =>
+                setErrorMessage({ title: err.code, message: err.message })
+            )
+    }
 
     return (
-        <Menu
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            onClick={handleClose}
-            sx={{ width: '100%', maxWidth: 360 }}
-            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        >
-            <nav aria-label="main mailbox folders">
-                <MenuItem>
-                    <ListItemIcon>
-                        <PersonIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Hồ sơ" />
-                </MenuItem>
-            </nav>
-            <Divider />
-            <nav aria-label="secondary mailbox folders">
-                <MenuItem>
-                    <ListItemIcon>
-                        <Settings fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Cài đặt" />
-                </MenuItem>
-                <MenuItem>
-                    <ListItemIcon>
-                        <LogoutIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Đăng xuất" />
-                </MenuItem>
-            </nav>
-        </Menu>
+        <>
+            <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                sx={{ width: '100%', maxWidth: 360 }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+                <nav aria-label="main mailbox folders">
+                    <MenuItem>
+                        <ListItemIcon>
+                            <PersonIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Hồ sơ" />
+                    </MenuItem>
+                </nav>
+                <Divider />
+                <nav aria-label="secondary mailbox folders">
+                    <MenuItem>
+                        <ListItemIcon>
+                            <Settings fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Cài đặt" />
+                    </MenuItem>
+                    <MenuItem onClick={handleSignOut}>
+                        <ListItemIcon>
+                            <LogoutIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Đăng xuất" />
+                    </MenuItem>
+                </nav>
+            </Menu>
+            <AlertError
+                errorMessage={errorMessage}
+                open={openErrorMessage}
+                handleClose={handleCloseErrorMessage}
+            />
+        </>
     )
 }
 
 function HeaderLayout() {
-    const userRef = useRef<User | null>(null) // get user
+    const [userProfile, setUserProfile] = useState<IUserCurrent>()
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl)
 
@@ -93,18 +132,12 @@ function HeaderLayout() {
     }
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                userRef.current = {
-                    name: user.displayName,
-                    email: user.email,
-                }
-            } else {
-                userRef.current = null
-            }
-        })
+        const storedData = localStorage.getItem('user')
+        const userCurrent: IUserCurrent = storedData
+            ? JSON.parse(storedData)
+            : null
 
-        return () => unsubscribe()
+        setUserProfile(userCurrent)
     }, [])
 
     return (
@@ -127,13 +160,10 @@ function HeaderLayout() {
 
                     <Box className="grow" />
 
-                    {userRef.current ? (
+                    {userProfile ? (
                         <Box className="flex items-center">
                             <Tooltip
-                                title={
-                                    userRef.current.name ||
-                                    userRef.current.email
-                                }
+                                title={userProfile.name || userProfile.email}
                                 placement="bottom"
                                 arrow
                             >

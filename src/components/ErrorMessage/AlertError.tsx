@@ -1,6 +1,6 @@
 import { Alert, Snackbar, AlertTitle } from '@mui/material'
 
-interface IErrorMessage {
+export interface IErrorMessage {
     title: string
     message: string
 }

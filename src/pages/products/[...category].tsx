@@ -2,14 +2,14 @@ import { ReactElement } from 'react'
 import Head from 'next/head'
 import { Box, Paper } from '@mui/material'
 
-import HeaderOnly from '@/components/layout/HeaderOnly'
 import { NextPageWithLayout } from '@/pages/_app'
 import InfoProductDetail from '@/components/ProductDetail/Info'
 import TableInfo from '@/components/ProductDetail/TableInfo'
 import ProductDescription from '@/components/ProductDetail/ProductDescription'
 import Reviews from '@/components/ProductDetail/Reviews'
+import DefaultLayout from '@/components/layout/DefaultLayout'
 
-const ProductDetail: NextPageWithLayout = () => {
+const ProductsCategory: NextPageWithLayout = () => {
     return (
         <>
             <Head>
@@ -35,8 +35,8 @@ const ProductDetail: NextPageWithLayout = () => {
     )
 }
 
-ProductDetail.getLayout = function getLayout(page: ReactElement) {
-    return <HeaderOnly>{page}</HeaderOnly>
+ProductsCategory.getLayout = function getLayout(page: ReactElement) {
+    return <DefaultLayout>{page}</DefaultLayout>
 }
 
-export default ProductDetail
+export default ProductsCategory

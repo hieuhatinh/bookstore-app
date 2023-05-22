@@ -37,41 +37,53 @@ export const listItemCategory = [
     {
         id: 0,
         category: 'Tất cả',
+        type: 'all'
     },
     {
         id: 1,
         category: 'Văn học trong nước',
+        type: 'domestic_literature'
     },
     {
         id: 2,
         category: 'Văn học nước ngoài',
+        type: 'foreign_literature'
     },
     {
         id: 3,
         category: 'Kinh tế',
+        type: 'economy'
     },
     {
         id: 4,
         category: 'Tâm lý giáo dục',
+        type: 'educational_psychology'
     },
     {
         id: 5,
         category: 'Triết học',
+        type: 'philosophy'
     },
     {
         id: 6,
         category: 'Tôn giáo',
+        type: 'religion'
     },
     {
         id: 7,
         category: 'Truyện',
+        type: 'comic'
     },
     {
         id: 8,
         category: 'Lịch sử - Địa lý',
+        type: 'history_geography'
     },
     {
         id: 9,
         category: 'Khoa học',
+        type: 'science'
     },
 ]
+
+export const userProfileLocalStorage = 'user'
