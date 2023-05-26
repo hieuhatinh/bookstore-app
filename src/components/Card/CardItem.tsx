@@ -1,5 +1,4 @@
 import CardContent from '@mui/material/CardContent'
-import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 import { Badge, Card, CardActionArea } from '@mui/material'
 import Link from 'next/link'
@@ -23,11 +22,11 @@ export default function CardItem(props: IProps) {
             <Card className="max-w-[200px] max-h-[380px]">
                 <CardActionArea>
                     <Image
-                        height="200"
-                        width="180"
+                        height={200}
+                        width={180}
                         src={image}
                         alt={name}
-                        className="pt-2 px-3 w-full h-[250px] m-auto"
+                        className="pt-2 px-3 w-[180px] h-[200px] m-auto"
                     />
                     <CardContent>
                         <Typography
