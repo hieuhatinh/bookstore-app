@@ -4,13 +4,12 @@ import HeaderAuth from '@/components/main/HeaderAuth'
 
 interface Props {
     children: ReactNode
-    title: string
 }
 
-export default function AuthLayout({ children, title, ...props }: Props) {
+export default function AuthLayout({ children, ...props }: Props) {
     return (
         <>
-            <HeaderAuth title={title} />
+            <HeaderAuth />
             <Container maxWidth="lg" className="mt-header-content h-full">
                 {children}
             </Container>

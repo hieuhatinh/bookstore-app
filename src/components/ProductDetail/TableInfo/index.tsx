@@ -9,6 +9,7 @@ import {
     Typography,
     tableCellClasses,
 } from '@mui/material'
+import { isNullOrUndefined } from 'util'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.body}`]: {
@@ -29,35 +30,32 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const informations = [
     {
         name: 'Công ty phát hành',
-        data: 'Alphabooks',
-    },
-    {
-        name: 'Ngày xuất bản',
-        data: '2018-12-26 16:24:25',
+        data: null,
     },
     {
         name: 'Kích thước',
-        data: '13 x 20,5 cm',
-    },
-    {
-        name: 'Dịch Giả',
-        data: 'Phương Oanh',
-    },
-    {
-        name: 'Loại bìa',
-        data: 'Bìa mềm',
+        data: null,
     },
     {
         name: 'Số trang',
-        data: 444,
+        data: null,
     },
     {
         name: 'Nhà xuất bản',
-        data: 'Nhà Xuất Bản Lao Động Xã Hội',
+        data: null,
     },
 ]
 
-export default function TableInfo() {
+interface IPropsTableInfo {
+    issuingCompany: string | undefined
+    numberOfPages: number | undefined
+    size: string | undefined
+    publishingCompany: string | undefined
+}
+
+export default function TableInfo(props: IPropsTableInfo) {
+    const { issuingCompany, numberOfPages, size, publishingCompany } = props
+
     return (
         <Box className="p-5">
             <Typography variant="h6" className="font-bold mb-3">
@@ -66,16 +64,38 @@ export default function TableInfo() {
             <TableContainer>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableBody>
-                        {informations.map((item) => (
-                            <StyledTableRow key={item.name}>
-                                <StyledTableCell component="th" scope="row">
-                                    {item.name}
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    {item.data}
-                                </StyledTableCell>
-                            </StyledTableRow>
-                        ))}
+                        <StyledTableRow>
+                            <StyledTableCell component="th" scope="row">
+                                Công ty phát hành
+                            </StyledTableCell>
+                            <StyledTableCell align="right">
+                                {issuingCompany}
+                            </StyledTableCell>
+                        </StyledTableRow>
+                        <StyledTableRow>
+                            <StyledTableCell component="th" scope="row">
+                                Kích thước
+                            </StyledTableCell>
+                            <StyledTableCell align="right">
+                                {size}
+                            </StyledTableCell>
+                        </StyledTableRow>
+                        <StyledTableRow>
+                            <StyledTableCell component="th" scope="row">
+                                Số trang
+                            </StyledTableCell>
+                            <StyledTableCell align="right">
+                                {numberOfPages}
+                            </StyledTableCell>
+                        </StyledTableRow>
+                        <StyledTableRow>
+                            <StyledTableCell component="th" scope="row">
+                                Nhà xuất bản
+                            </StyledTableCell>
+                            <StyledTableCell align="right">
+                                {publishingCompany}
+                            </StyledTableCell>
+                        </StyledTableRow>
                     </TableBody>
                 </Table>
             </TableContainer>

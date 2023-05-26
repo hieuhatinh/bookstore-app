@@ -21,6 +21,16 @@ interface IValuesLogin {
     password: string
 }
 
+export const saveInfoUser = (userCredential: UserCredential) => {
+    const result = {
+        name: userCredential.user.displayName,
+        email: userCredential.user.email,
+        uid: userCredential.user.uid,
+    }
+
+    localStorage.setItem(userProfileLocalStorage, JSON.stringify(result))
+}
+
 export default function Login() {
     const router = useRouter()
     const [open, setOpen] = useState<boolean>(false)
@@ -53,17 +63,7 @@ export default function Login() {
                 values.password
             )
                 .then((userCredential: UserCredential) => {
-                    const result = {
-                        name: userCredential.user.displayName,
-                        email: userCredential.user.email,
-                        uid: userCredential.user.uid,
-                    }
-
-                    localStorage.setItem(
-                        userProfileLocalStorage,
-                        JSON.stringify(result)
-                    )
-
+                    saveInfoUser(userCredential)
                     router.push(routes.home)
                 })
                 .catch((error) => {

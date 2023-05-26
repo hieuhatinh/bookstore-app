@@ -7,8 +7,6 @@ import TabsContent from '@/components/contents/TabsContent'
 import DefaultLayout from '@/components/layout/DefaultLayout'
 
 // 4. xây dựng logic thêm sản phẩm vào giỏ hàng và các logic tương tự ở phần giỏ hàng bằng redux
-// 6. kết nối firebase lấy thông tin về và render ra giao diện
-// 8. làm giao diện trang loading khi chờ load dữ liệu
 // 9. làm trang 404 not found khi sai đường dẫn
 // 10. làm các thông báo lỗi, warning đối với những đường dẫn chưa hoàn thiện
 

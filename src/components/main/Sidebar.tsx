@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
     Box,
     List,
@@ -9,33 +9,23 @@ import {
     Tabs,
 } from '@mui/material'
 import { listItemCategory } from '@/constants'
+import { usePathname } from 'next/navigation'
 
-interface LinkTabProps {
-    key: number
-    href: string
-    label: React.ReactNode
-    value: string
-    className: string
-}
-
-function LinkTab(props: LinkTabProps) {
-    return (
-        <Tab
-            component="a"
-            onClick={(
-                event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-            ) => {
-                event.preventDefault()
-            }}
-            {...props}
-        />
-    )
+interface IResult {
+    id: number
+    category: string
+    type: string
+    path: string
 }
 
 export default function Sidebar() {
-    const [value, setValue] = useState<string>(listItemCategory[0].category)
+    const pathName = usePathname()
 
-    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    const result: any = listItemCategory.find((item) => item.path === pathName)
+
+    const [value, setValue] = useState<any>(result.category)
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
     }
 
@@ -52,14 +42,15 @@ export default function Sidebar() {
                 >
                     <Tabs
                         value={value}
-                        orientation="vertical"
                         onChange={handleChange}
+                        orientation="vertical"
                         className="flex items-start"
                     >
                         {listItemCategory.map((item) => (
-                            <LinkTab
+                            <Tab
+                                component="a"
                                 key={item.id}
-                                href={`/products/${item.type}`}
+                                href={item.path}
                                 label={
                                     <ListItemText
                                         className="flex items-center normal-case"

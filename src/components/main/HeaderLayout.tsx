@@ -22,7 +22,7 @@ import {
     MenuItem,
 } from '@mui/material'
 import { auth } from '@/config/firebase'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 
 import { signOut } from 'firebase/auth'
 
@@ -63,11 +63,11 @@ const ListUser = (props: IPropsListUser) => {
         setOpenErrorMessage(false)
     }
 
-    const handleSignOut = () => {
-        signOut(auth)
+    const handleSignOut = async () => {
+        await signOut(auth)
             .then(() => {
                 localStorage.removeItem(userProfileLocalStorage)
-                router.push(routes.home)
+                router.push(routes.login)
             })
             .catch((err) =>
                 setErrorMessage({ title: err.code, message: err.message })
@@ -119,7 +119,7 @@ const ListUser = (props: IPropsListUser) => {
 }
 
 function HeaderLayout() {
-    const [userProfile, setUserProfile] = useState<IUserCurrent>()
+    const [userProfile, setUserProfile] = useState<IUserCurrent | null>(null)
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl)
 

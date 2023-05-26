@@ -11,6 +11,7 @@ import Facebook from '@/assets/images/facebook.png'
 
 import routes from '@/routes'
 import AlertError from '@/components/ErrorMessage/AlertError'
+import { saveInfoUser } from './Login'
 
 interface IErrorMessage {
     title: string
@@ -39,6 +40,7 @@ export default function SocialNetwork() {
     const handleSignInWithEmail = async () => {
         await signInWithPopup(auth, provider)
             .then((result) => {
+                saveInfoUser(result)
                 router.push(routes.home)
             })
             .catch((error) => {

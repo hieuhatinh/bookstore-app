@@ -1,3 +1,4 @@
+import routes from '@/routes'
 import * as yup from 'yup'
 
 export const schemaForm = yup.object({
@@ -37,52 +38,52 @@ export const listItemCategory = [
     {
         id: 0,
         category: 'Tất cả',
-        type: 'all'
+        path: routes.home
     },
     {
         id: 1,
         category: 'Văn học trong nước',
-        type: 'domestic_literature'
+        path: routes.booksOfTheGenre('domestic_literature')
     },
     {
         id: 2,
         category: 'Văn học nước ngoài',
-        type: 'foreign_literature'
+        path: routes.booksOfTheGenre('foreign_literature')
     },
     {
         id: 3,
         category: 'Kinh tế',
-        type: 'economy'
+        path: routes.booksOfTheGenre('economy')
     },
     {
         id: 4,
         category: 'Tâm lý giáo dục',
-        type: 'educational_psychology'
+        path: routes.booksOfTheGenre('educational_psychology')
     },
     {
         id: 5,
         category: 'Triết học',
-        type: 'philosophy'
+        path: routes.booksOfTheGenre('philosophy')
     },
     {
         id: 6,
         category: 'Tôn giáo',
-        type: 'religion'
+        path: routes.booksOfTheGenre('religion')
     },
     {
         id: 7,
         category: 'Truyện',
-        type: 'comic'
+        path: routes.booksOfTheGenre('comic')
     },
     {
         id: 8,
         category: 'Lịch sử - Địa lý',
-        type: 'history_geography'
+        path: routes.booksOfTheGenre('history_geography')
     },
     {
         id: 9,
         category: 'Khoa học',
-        type: 'science'
+        path: routes.booksOfTheGenre('science')
     },
 ]
 

@@ -1,13 +1,9 @@
-import { AppBar, Container, Toolbar, Typography } from '@mui/material'
+import { AppBar, Container, Toolbar } from '@mui/material'
 import Link from 'next/link'
 
-interface IProps {
-    title: string
-}
+import routes from '@/routes'
 
-function HeaderAuth(props: IProps) {
-    const { title } = props
-
+function HeaderAuth() {
     return (
         <AppBar className="bg-slate-200 pb-1">
             <Toolbar>
@@ -15,12 +11,12 @@ function HeaderAuth(props: IProps) {
                     maxWidth="lg"
                     className="flex items-center justify-between"
                 >
-                    <Typography
-                        variant="h2"
+                    <Link
+                        href={routes.home}
                         className="font-semibold text-xl text-logo"
                     >
-                        BookStore {title}
-                    </Typography>
+                        BookStore
+                    </Link>
                     <Link href="" className="text-orange-600">
                         Cần giúp đỡ?
                     </Link>
