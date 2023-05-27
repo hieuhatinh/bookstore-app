@@ -1,93 +1,47 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useState } from 'react'
 import Head from 'next/head'
-import { Box, Paper } from '@mui/material'
 
 import HeaderOnly from '@/components/layout/HeaderOnly'
 import { NextPageWithLayout } from '@/pages/_app'
-import InfoProductDetail from '@/components/ProductDetail/Info'
-import TableInfo from '@/components/ProductDetail/TableInfo'
-import ProductDescription from '@/components/ProductDetail/ProductDescription'
-import Reviews from '@/components/ProductDetail/Reviews'
-import { useRouter } from 'next/router'
-import {
-    DocumentData,
-    DocumentReference,
-    DocumentSnapshot,
-    doc,
-    getDoc,
-} from 'firebase/firestore'
-import { db } from '@/config/firebase'
 
-type IProduct = {
-    author: string
-    description: string
-    img: string
-    'issuing-company': string
-    name: string
-    'number-of-pages': number
-    price: number
-    'publishing-company': string
-    size: string
-    type: string
+import ProductDetailComponent from '@/components/ProductDetail'
+import { GetServerSideProps } from 'next'
+
+type Props = {
+    id: string | string[] | undefined
+    category: string | string[] | undefined
 }
 
-const ProductDetail: NextPageWithLayout = () => {
-    const [product, setProduct] = useState<any>()
-
-    const router = useRouter()
-    const { category, id } = router.query
-
-    useEffect(() => {
-        const result = async () => {
-            const docRef: DocumentReference<DocumentData> = doc(
-                db,
-                category as string,
-                id as string
-            )
-
-            const docSnap: DocumentSnapshot<DocumentData> = await getDoc(docRef)
-
-            setProduct(docSnap.data() as IProduct)
-        }
-
-        result()
-    }, [category, id])
+const ProductDetail: NextPageWithLayout<Props> = ({ category, id }) => {
+    const [title, setTitle] = useState<string>()
 
     return (
         <>
             <Head>
-                <title>{product.name} | BookStore</title>
+                <title>{title} | BookStore</title>
             </Head>
             <main>
-                <Box>
-                    <Paper className="mb-5">
-                        <InfoProductDetail
-                            img={product.img}
-                            name={product.name}
-                            author={product.author}
-                            price={product.price}
-                        />
-                    </Paper>
-                    <Paper className="mb-5">
-                        <TableInfo
-                            issuingCompany={product['issuing-company']}
-                            numberOfPages={product['number-of-pages']}
-                            size={product.size}
-                            publishingCompany={product['publishing-company']}
-                        />
-                    </Paper>
-                    <Paper className="mb-5">
-                        <ProductDescription
-                            description={product.description}
-                        />
-                    </Paper>
-                    <Paper className="mb-5">
-                        <Reviews />
-                    </Paper>
-                </Box>
+                <ProductDetailComponent
+                    setTitle={setTitle}
+                    category={category}
+                    id={id}
+                />
             </main>
         </>
     )
+}
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+    query,
+    params,
+}) => {
+    const { category, id } = query || params
+    return {
+        props: {
+            category: category,
+            id: id,
+        },
+    }
 }
 
 ProductDetail.getLayout = function getLayout(page: ReactElement) {

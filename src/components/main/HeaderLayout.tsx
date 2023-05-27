@@ -63,6 +63,7 @@ const ListUser = (props: IPropsListUser) => {
         setOpenErrorMessage(false)
     }
 
+    // logout
     const handleSignOut = async () => {
         await signOut(auth)
             .then(() => {

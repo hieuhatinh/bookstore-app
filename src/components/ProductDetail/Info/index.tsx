@@ -5,6 +5,7 @@ import SendIcon from '@mui/icons-material/Send'
 
 import NumberOfProducts from '@/components/NumberOfProducts'
 import Shop from './Shop'
+import loadingBook from '@/assets/images/loading_book.jpg'
 
 interface IPropInfoProductDetail {
     img: string
@@ -14,15 +15,15 @@ interface IPropInfoProductDetail {
 }
 
 export default function InfoProductDetail(props: IPropInfoProductDetail) {
-    const { img, name, author, price } = props
+    const handleBuy = () => {}
 
     return (
         <Box>
             <Grid container>
                 <Grid item xs={5}>
                     <Image
-                        src={img}
-                        alt={name}
+                        src={props.img || loadingBook}
+                        alt={props.name || 'image'}
                         width={500}
                         height={500}
                         className="w-full h-[70%] p-5 object-cover object-center"
@@ -33,15 +34,15 @@ export default function InfoProductDetail(props: IPropInfoProductDetail) {
                         <Typography variant="body1">
                             Tác giả:{' '}
                             <Link href="" className="text-cyan-500">
-                                {author}
+                                {props.author}
                             </Link>
                         </Typography>
-                        <Typography variant="h5">{name}</Typography>
+                        <Typography variant="h5">{props.name}</Typography>
                         <Badge
                             badgeContent="đ"
                             className="text-price font-bold text-xl my-5"
                         >
-                            {price}
+                            {props.price}
                         </Badge>
                         <Box className="my-4">
                             <Typography variant="body1" className="mb-1">
@@ -55,6 +56,7 @@ export default function InfoProductDetail(props: IPropInfoProductDetail) {
                             <Button
                                 variant="contained"
                                 className="bg-submit-buy hover:bg-submit-buy-hv capitalize flex-1"
+                                onClick={handleBuy}
                             >
                                 Chọn mua
                             </Button>

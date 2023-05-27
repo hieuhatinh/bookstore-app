@@ -34,6 +34,7 @@ export default function CardContainer(props: IPropsCollectionName) {
     const [books, setBooks] = useState<any[]>([])
     const [loading, setLoading] = useState<boolean>(true)
 
+    // lấy data từ firestore
     useEffect(() => {
         const result = async () => {
             const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
