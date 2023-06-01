@@ -1,56 +1,56 @@
 import { Button } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
-import { useDispatch, useSelector } from 'react-redux'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import React, { DOMAttributes } from 'react'
 
-import { RootState } from '@/store'
+interface IProps {
+    value: any
+    setValue: any
+}
 
-export default function NumberOfProducts() {
-    // const dispatch = useDispatch()
-    // const router = useRouter()
-    // const { category, id } = router
+export default function NumberOfProducts(props: IProps) {
+    const { value, setValue } = props
 
-    // const totalBooks = useSelector(
-    //     (state: RootState) => state.bookReducer.items[id].quantity ?? 0
-    // )
+    const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value)
+    }
 
-    // const [valueNumber, setValueNumber] = useState<number>(totalBooks)
+    const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+        e.target.value = value.replace(/[^0-9]/g, '')
+    }
 
-    // console.log(category, id)
+    const handleIncreaseValue = () => {
+        setValue((prev: any) => (prev + 1) as number)
+    }
 
-    // console.log(totalBooks)
-
-    // const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     setValueNumber(+e.target.value)
-    // }
-
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         dispatch(setNumberProduct(valueNumber))
-    //     }, 5000)
-    // }, [dispatch, valueNumber])
+    const handleDecreaseValue = () => {
+        setValue((prev: any) => (prev - 1) as number)
+    }
 
     return (
         <>
             <Button
+                disabled={value <= 1 ? true : false}
                 className="button-custom-quantity"
-                // onClick={() => setValueNumber((prev) => prev++)}
-            >
-                <AddIcon />
-            </Button>
-            <input
-                type="text"
-                value="1"
-                className="input-custom-quantity text-center"
-                // onChange={handleChangeValue}
-            />
-            <Button
-                className="button-custom-quantity"
-                // onClick={() => setValueNumber((prev) => prev--)}
+                onClick={handleDecreaseValue}
             >
                 <RemoveIcon />
+            </Button>
+
+            <input
+                type="number"
+                value={value}
+                className="input-custom-quantity text-center"
+                onChange={handleChangeValue}
+                onInput={handleInput}
+            />
+
+            <Button
+                className="button-custom-quantity"
+                onClick={handleIncreaseValue}
+            >
+                <AddIcon />
             </Button>
         </>
     )

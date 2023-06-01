@@ -11,9 +11,45 @@ import {
     Typography,
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { useEffect, useState } from 'react'
+import { collection, getDocs, query, where } from 'firebase/firestore'
+
 import ProductItem from './ProductItem'
+import { IUserCurrent, userProfileLocalStorage } from '@/constants'
+import { db } from '@/config/firebase'
+
+export interface IProductCart {
+    'user-id': string
+    'id-product': string
+    'category-product': string
+    quantity: number
+}
 
 export default function Products() {
+    const [products, setProducts] = useState<IProductCart[]>([])
+
+    useEffect(() => {
+        const storedData = localStorage.getItem(userProfileLocalStorage)
+        const userCurrent: IUserCurrent = storedData
+            ? JSON.parse(storedData)
+            : null
+
+        const fetchData = async () => {
+            const newCollection = collection(db, 'carts')
+            const q = query(
+                newCollection,
+                where('user-id', '==', userCurrent.uid)
+            )
+            const querySnapshot = await getDocs(q)
+            const data = querySnapshot.docs.map(
+                (doc) => doc.data() as IProductCart
+            )
+            setProducts(data)
+        }
+
+        fetchData()
+    }, [])
+
     return (
         <Box className="h-full">
             <List className="overflow-auto pt-0 max-h-list-product-height">
@@ -55,25 +91,9 @@ export default function Products() {
                     </Paper>
                 </ListSubheader>
                 <Paper elevation={0} className="px-4">
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
-                    <ProductItem />
+                    {products.map((book, index) => (
+                        <ProductItem key={index} book={book} />
+                    ))}
                 </Paper>
             </List>
         </Box>

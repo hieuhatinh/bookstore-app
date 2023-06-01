@@ -1,11 +1,5 @@
 import { Box, Paper } from '@mui/material'
-import {
-    DocumentData,
-    DocumentReference,
-    DocumentSnapshot,
-    doc,
-    getDoc,
-} from 'firebase/firestore'
+import { DocumentData, DocumentSnapshot, doc, getDoc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 
 import { db } from '@/config/firebase'
@@ -14,24 +8,12 @@ import InfoProductDetail from '@/components/ProductDetail/Info'
 import TableInfo from '@/components/ProductDetail/TableInfo'
 import ProductDescription from '@/components/ProductDetail/ProductDescription'
 import Reviews from '@/components/ProductDetail/Reviews'
-
-type IProduct = {
-    author: string
-    description: string
-    img: string
-    'issuing-company': string
-    name: string
-    'number-of-pages': number
-    price: number
-    'publishing-company': string
-    size: string
-    type: string
-}
+import { IProduct } from '@/constants'
 
 interface IProps {
     setTitle: (title: string) => void
-    id: string | string[] | undefined
     category: string | string[] | undefined
+    id: string | string[] | undefined
 }
 
 export default function ProductDetailComponent(props: IProps) {
@@ -66,6 +48,8 @@ export default function ProductDetailComponent(props: IProps) {
                     name={product?.name}
                     author={product?.author}
                     price={product?.price}
+                    category={category}
+                    id={id}
                 />
             </Paper>
             <Paper className="mb-5">

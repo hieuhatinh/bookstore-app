@@ -107,9 +107,7 @@ export default function Search() {
                         PopperProps={{
                             disablePortal: true,
                         }}
-                        // onClose={handleTooltipClose}
                         open={open}
-                        // disableFocusListener
                         disableHoverListener
                         disableTouchListener
                         placement="bottom-start"

@@ -1,4 +1,10 @@
-import { ReactElement, useState } from 'react'
+import {
+    ReactElement,
+    useState,
+    createContext,
+    Dispatch,
+    SetStateAction,
+} from 'react'
 import Head from 'next/head'
 
 import HeaderOnly from '@/components/layout/HeaderOnly'
@@ -11,6 +17,17 @@ type Props = {
     id: string | string[] | undefined
     category: string | string[] | undefined
 }
+
+interface OpenSuccessMessageContextProps {
+    openSuccessMessage: boolean
+    setOpenSuccessMessage: Dispatch<SetStateAction<boolean>>
+}
+
+export const OpenSuccessMessageContext =
+    createContext<OpenSuccessMessageContextProps>({
+        openSuccessMessage: false,
+        setOpenSuccessMessage: () => {},
+    })
 
 const ProductDetail: NextPageWithLayout<Props> = ({ category, id }) => {
     const [title, setTitle] = useState<string>()
@@ -45,7 +62,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 }
 
 ProductDetail.getLayout = function getLayout(page: ReactElement) {
-    return <HeaderOnly>{page}</HeaderOnly>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [openSuccessMessage, setOpenSuccessMessage] = useState<boolean>(false)
+
+    const valueProvider = { openSuccessMessage, setOpenSuccessMessage }
+
+    return (
+        <OpenSuccessMessageContext.Provider value={valueProvider}>
+            <HeaderOnly>{page}</HeaderOnly>
+        </OpenSuccessMessageContext.Provider>
+    )
 }
 
 export default ProductDetail

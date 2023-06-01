@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import {
+    useContext,
+    useEffect,
+    useState,
+    Dispatch,
+    SetStateAction,
+} from 'react'
 import Link from 'next/link'
 import Tooltip from '@mui/material/Tooltip'
 import Settings from '@mui/icons-material/Settings'
@@ -20,16 +26,23 @@ import {
     Typography,
     Menu,
     MenuItem,
+    Paper,
+    TooltipProps,
+    tooltipClasses,
 } from '@mui/material'
 import { auth } from '@/config/firebase'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CloseIcon from '@mui/icons-material/Close'
+import styled from '@emotion/styled'
 
 import { signOut } from 'firebase/auth'
 
 import routes from '@/routes'
 import Search from './components/Search'
 import AlertError, { IErrorMessage } from '@/components/ErrorMessage/AlertError'
-import { userProfileLocalStorage } from '@/constants'
+import { userProfileLocalStorage, IUserCurrent } from '@/constants'
+import { OpenSuccessMessageContext } from '@/pages/product/[category]/[id]'
 
 interface IPropsListUser {
     anchorEl: null | HTMLElement
@@ -37,12 +50,7 @@ interface IPropsListUser {
     handleClose: () => void
 }
 
-interface IUserCurrent {
-    name?: string
-    email?: string
-    uid: string
-}
-
+// render khi hover vào ảnh đại diện
 const ListUser = (props: IPropsListUser) => {
     const { anchorEl, open, handleClose } = props
     const router = useRouter()
@@ -119,6 +127,58 @@ const ListUser = (props: IPropsListUser) => {
     )
 }
 
+// hiển thị thông báo khi thêm vào giỏ hàng
+const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+        color: '#fff',
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+        width: 275,
+        maxWidth: '100%',
+        backgroundColor: '#fff',
+        padding: 0,
+        marginTop: '4px !important',
+    },
+}))
+
+interface IPropsAlertAddProductSuccess {
+    setOpen: Dispatch<SetStateAction<boolean>>
+}
+const AlertAddProductSuccess = (props: IPropsAlertAddProductSuccess) => {
+    const { setOpen } = props
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    return (
+        <Paper className="p-3">
+            <CloseIcon
+                className="float-right cursor-pointer"
+                onClick={handleClose}
+            />
+            <Typography
+                variant="body1"
+                className="flex items-center justify-center pe-2"
+            >
+                <CheckCircleIcon className="me-1 text-lime-500" />
+                <span className="text-sm whitespace-nowrap">
+                    Thêm vào giỏ hàng thành công!
+                </span>
+            </Typography>
+            <Button
+                href={routes.cart}
+                variant="contained"
+                className="normal-case bg-red-600 hover:bg-red-600 mt-2 w-full"
+            >
+                Xem giỏ hàng và thanh toán
+            </Button>
+        </Paper>
+    )
+}
+
 function HeaderLayout() {
     const [userProfile, setUserProfile] = useState<IUserCurrent | null>(null)
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -133,12 +193,25 @@ function HeaderLayout() {
     }
 
     useEffect(() => {
-        const storedData = localStorage.getItem('user')
+        const storedData = localStorage.getItem(userProfileLocalStorage)
         const userCurrent: IUserCurrent = storedData
             ? JSON.parse(storedData)
             : null
 
         setUserProfile(userCurrent)
+    }, [])
+
+    // usecontext xử lý thông báo đã thêm sản phẩm vào giỏ hàng
+    const valueProvider = useContext(OpenSuccessMessageContext)
+    const { openSuccessMessage, setOpenSuccessMessage } = valueProvider
+
+    useEffect(() => {
+        const idTimeout = setTimeout(() => {
+            setOpenSuccessMessage(false)
+        }, 5000)
+
+        return () => clearTimeout(idTimeout)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -164,9 +237,10 @@ function HeaderLayout() {
                     {userProfile ? (
                         <Box className="flex items-center">
                             <Tooltip
+                                disableHoverListener
+                                disableTouchListener
                                 title={userProfile.name || userProfile.email}
                                 placement="bottom"
-                                arrow
                             >
                                 <IconButton onClick={handleClick}>
                                     <Avatar
@@ -187,19 +261,26 @@ function HeaderLayout() {
                                 variant="middle"
                                 flexItem
                             />
-                            <Link href="/cart">
-                                <Tooltip
-                                    title="Giỏ hàng"
-                                    placement="bottom"
-                                    arrow
-                                >
+                            <CustomTooltip
+                                PopperProps={{
+                                    disablePortal: true,
+                                }}
+                                title={
+                                    <AlertAddProductSuccess
+                                        setOpen={setOpenSuccessMessage}
+                                    />
+                                }
+                                placement="bottom-end"
+                                open={openSuccessMessage}
+                            >
+                                <Link href={routes.cart}>
                                     <IconButton>
                                         <Badge badgeContent={4} color="error">
                                             <ShoppingCartIcon className="text-violet-700" />
                                         </Badge>
                                     </IconButton>
-                                </Tooltip>
-                            </Link>
+                                </Link>
+                            </CustomTooltip>
                         </Box>
                     ) : (
                         <Box className="flex items-center">

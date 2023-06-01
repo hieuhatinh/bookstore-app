@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation'
 
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 
-import { schemaForm } from '@/constants'
+import { schemaFormRegister } from '@/constants'
 import SocialNetwork from './SocialNetwork'
 import routes from '@/routes'
 import { auth } from '@/config/firebase'
@@ -61,7 +61,7 @@ export default function Register() {
                     password: '',
                     passwordConfirm: '',
                 }}
-                validationSchema={schemaForm}
+                validationSchema={schemaFormRegister}
                 onSubmit={async (values: IValuesFormRegister) => {
                     await createUserWithEmailAndPassword(
                         auth,

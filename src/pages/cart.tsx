@@ -1,13 +1,47 @@
 import Head from 'next/head'
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Button, Grid, Typography } from '@mui/material'
 import { NextPageWithLayout } from './_app'
-import { ReactElement } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import HeaderOnly from '@/components/layout/HeaderOnly'
 
 import Products from '@/components/Cart/Products'
 import Invoice from '@/components/Cart/Invoice'
+import { userProfileLocalStorage } from '@/constants'
+import routes from '@/routes'
 
 const Cart: NextPageWithLayout = () => {
+    const [haveData, setHaveData] = useState<boolean>(true)
+
+    useEffect(() => {
+        const userData = localStorage.getItem(userProfileLocalStorage)
+
+        if (!userData) {
+            setHaveData(false)
+        }
+    }, [])
+
+    if (haveData === false) {
+        return (
+            <>
+                <Head>
+                    <title>Giỏ hàng | BookStore</title>
+                </Head>
+                <Box className="flex flex-col justify-center items-center h-screen">
+                    <Typography variant="h5">
+                        Bạn cần đăng nhập để có thể truy cập trang này.
+                    </Typography>
+                    <Button
+                        href={routes.login}
+                        variant="contained"
+                        className="normal-case mt-2"
+                    >
+                        Đi đăng nhập
+                    </Button>
+                </Box>
+            </>
+        )
+    }
+
     return (
         <>
             <Head>

@@ -2,6 +2,7 @@ const routes = {
     home: '/', 
     login: '/auth/login', 
     register: '/auth/register', 
+    cart: '/cart',
     booksOfTheGenre: (params: string) => {
         return `/products/${params}`
     }, 
