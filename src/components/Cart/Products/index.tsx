@@ -27,6 +27,7 @@ export interface IProductCart {
 
 export default function Products() {
     const [products, setProducts] = useState<IProductCart[]>([])
+    const [checkedAll, setCheckedAll] = useState<boolean>(false)
 
     useEffect(() => {
         const storedData = localStorage.getItem(userProfileLocalStorage)
@@ -50,6 +51,10 @@ export default function Products() {
         fetchData()
     }, [])
 
+    const handleChangeChecked = () => {
+        setCheckedAll(!checkedAll)
+    }
+
     return (
         <Box className="h-full">
             <List className="overflow-auto pt-0 max-h-list-product-height">
@@ -59,8 +64,14 @@ export default function Products() {
                             <Grid container className="items-center">
                                 <Grid item xs={5}>
                                     <FormControlLabel
-                                        control={<Checkbox name="all" />}
-                                        label={`Tất cả (1 sản phẩm)`}
+                                        control={
+                                            <Checkbox
+                                                checked={checkedAll}
+                                                name="all"
+                                                onChange={handleChangeChecked}
+                                            />
+                                        }
+                                        label={`Tất cả (${products.length} sản phẩm)`}
                                     />
                                 </Grid>
                                 <Grid item xs={2} className="text-center">
@@ -92,7 +103,11 @@ export default function Products() {
                 </ListSubheader>
                 <Paper elevation={0} className="px-4">
                     {products.map((book, index) => (
-                        <ProductItem key={index} book={book} />
+                        <ProductItem
+                            key={index}
+                            book={book}
+                            checkedAll={checkedAll}
+                        />
                     ))}
                 </Paper>
             </List>

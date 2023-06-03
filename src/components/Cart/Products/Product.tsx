@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import routes from '@/routes'
+import loadingBook from '@/assets/images/loading_book.jpg'
 
 interface IProps {
     img: string
@@ -17,8 +18,13 @@ export default function Product(props: IProps) {
     return (
         <Link href={routes.linkToProduct(category, id)}>
             <Box className="flex items-center">
-                <Image src={img} alt={name} width={100} height={200} />
-                <Typography variant="h6" className="three-dots text-base">
+                <Image
+                    src={img ?? loadingBook}
+                    alt={name ?? 'image'}
+                    width={100}
+                    height={200}
+                />
+                <Typography variant="h6" className="three-dots text-base ms-2">
                     {name}
                 </Typography>
             </Box>

@@ -9,27 +9,38 @@ import {
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useEffect, useState } from 'react'
-import { DocumentData, DocumentSnapshot, doc, getDoc } from 'firebase/firestore'
+import {
+    DocumentData,
+    DocumentSnapshot,
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    query,
+    updateDoc,
+    where,
+} from 'firebase/firestore'
 
+import { db } from '@/config/firebase'
 import Product from './Product'
 import NumberOfProducts from '@/components/NumberOfProducts'
-import { db } from '@/config/firebase'
-import { IValueItem } from '@/store/bookSlice'
 import { IProduct } from '@/constants'
 import { IProductCart } from '@/components/Cart/Products'
 
 interface IProps {
     book: IProductCart
+    checkedAll: boolean
 }
 
 export default function ProductItem(props: IProps) {
-    const { book } = props
+    const { book, checkedAll } = props
     const categoryProduct = book['category-product']
     const idProduct = book['id-product']
 
     const [value, setValue] = useState<number>(book.quantity)
     const [product, setProduct] = useState<any>()
     const [totalPrice, setTotalPrice] = useState<number>(0) // tính tổng tiền của số lượng sản phẩm
+    const [checkedItem, setCheckedItem] = useState<boolean>(false)
 
     useEffect(() => {
         const result = async () => {
@@ -50,19 +61,38 @@ export default function ProductItem(props: IProps) {
     }, [])
 
     useEffect(() => {
-        const result = +value * product?.price
+        const result = value * product?.price
         setTotalPrice(result)
-    }, [book.quantity, product?.price, value])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value])
+
+    useEffect(() => {
+        if (checkedAll) {
+            setCheckedItem(true)
+        } else {
+            setCheckedItem(false)
+        }
+    }, [checkedAll])
+
+    const handleChangeCheckedItem = () => {
+        setCheckedItem(!checkedItem)
+    }
 
     return (
         <FormGroup className="py-4">
             <Grid container className="items-center">
                 <Grid item xs={5}>
                     <FormControlLabel
-                        control={<Checkbox name="all" />}
+                        control={
+                            <Checkbox
+                                checked={checkedItem}
+                                name={idProduct}
+                                onChange={handleChangeCheckedItem}
+                            />
+                        }
                         label={
                             <Product
-                                img={product?.image}
+                                img={product?.img}
                                 name={product?.name}
                                 id={idProduct}
                                 category={categoryProduct}
@@ -77,7 +107,11 @@ export default function ProductItem(props: IProps) {
                 </Grid>
                 <Grid item xs={2} className="text-center">
                     <Box className="flex items-center justify-center">
-                        <NumberOfProducts value={value} setValue={setValue} />
+                        <NumberOfProducts
+                            value={value}
+                            setValue={setValue}
+                            idProduct={idProduct}
+                        />
                     </Box>
                 </Grid>
                 <Grid item xs={2} className="text-center">
