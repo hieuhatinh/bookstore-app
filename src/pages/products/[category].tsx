@@ -12,14 +12,6 @@ const BooksOfGenre: NextPageWithLayout = () => {
     const router = useRouter()
     const { category } = router.query
 
-    const [collectionName, setCollectionName] = useState<
-        string | string[] | undefined
-    >()
-
-    useEffect(() => {
-        setCollectionName(category)
-    }, [category])
-
     return (
         <>
             <Head>
@@ -27,7 +19,7 @@ const BooksOfGenre: NextPageWithLayout = () => {
             </Head>
             <main>
                 <Paper className="h-full p-3">
-                    <CardContainer collectionName={collectionName} />
+                    <CardContainer collectionName={category} />
                 </Paper>
             </main>
         </>

@@ -61,10 +61,9 @@ export default function ProductItem(props: IProps) {
     }, [])
 
     useEffect(() => {
-        const result = value * product?.price
+        const result = value * parseInt(product?.price)
         setTotalPrice(result)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value])
+    }, [product?.price, value])
 
     useEffect(() => {
         if (checkedAll) {

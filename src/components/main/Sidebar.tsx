@@ -11,19 +11,18 @@ import {
 import { listItemCategory } from '@/constants'
 import { usePathname } from 'next/navigation'
 
-interface IResult {
-    id: number
-    category: string
-    type: string
-    path: string
-}
-
 export default function Sidebar() {
     const pathName = usePathname()
 
-    const result: any = listItemCategory.find((item) => item.path === pathName)
+    const result: any =
+        listItemCategory.find((item) => item.path === pathName) ||
+        listItemCategory[0]
 
     const [value, setValue] = useState<any>(result.category)
+
+    useEffect(() => {
+        setValue(result.category)
+    }, [pathName, result.category])
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)

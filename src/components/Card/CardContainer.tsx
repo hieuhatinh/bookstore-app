@@ -37,23 +37,27 @@ export default function CardContainer(props: IPropsCollectionName) {
     // lấy data từ firestore
     useEffect(() => {
         const result = async () => {
-            const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
-                collection(
-                    db,
-                    collectionName as string
-                ) as CollectionReference<DocumentData>
-            )
+            if (!!collectionName) {
+                const querySnapshot: QuerySnapshot<DocumentData> =
+                    await getDocs(
+                        collection(
+                            db,
+                            props?.collectionName as string
+                        ) as CollectionReference<DocumentData>
+                    )
 
-            const result: IPropsResult[] = querySnapshot.docs.map((doc) => {
-                return { id: doc.id, ...doc.data() } as IPropsResult
-            })
+                const result: IPropsResult[] = querySnapshot.docs.map((doc) => {
+                    return { id: doc.id, ...doc.data() } as IPropsResult
+                })
 
-            setBooks(result)
+                setBooks(result)
 
-            setLoading(false)
+                setLoading(false)
+            }
         }
 
         result()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [collectionName])
 
     return (
